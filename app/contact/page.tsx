@@ -149,7 +149,12 @@ export default function ContactPage() {
               <div className="bg-white rounded-xl border border-[#e2e8f0] card-shadow overflow-hidden min-h-[600px]">
                 <iframe
     src="https://api.leadconnectorhq.com/widget/form/4KiLBBtIBUpc12ZaKEuF"
-    style="width:100%;height:100%;border:none;border-radius:8px"
+    style={{
+    width: "100%",
+    height: "100%",
+    border: "none",
+    borderRadius: "8px",
+  }}
     id="inline-4KiLBBtIBUpc12ZaKEuF" 
     data-layout="{'id':'INLINE'}"
     data-trigger-type="alwaysShow"
