@@ -148,28 +148,24 @@ export default function ContactPage() {
             <div className="lg:col-span-3">
               <div className="bg-white rounded-xl border border-[#e2e8f0] card-shadow overflow-hidden min-h-[600px]">
                 <iframe
-                  src="https://api.leadconnectorhq.com/widget/form/4KiLBBtIBUpc12ZaKEuF"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    border: "none",
-                    borderRadius: "8px",
-                    minHeight: "800px",
-                  }}
-                  id="inline-4KiLBBtIBUpc12ZaKEuF"
-                  data-layout="{'id':'INLINE'}"
-                  data-trigger-type="alwaysShow"
-                  data-trigger-value=""
-                  data-activation-type="alwaysActivated"
-                  data-activation-value=""
-                  data-deactivation-type="neverDeactivate"
-                  data-deactivation-value=""
-                  data-form-name="Form 4"
-                  data-height="879"
-                  data-layout-iframe-id="inline-4KiLBBtIBUpc12ZaKEuF"
-                  data-form-id="4KiLBBtIBUpc12ZaKEuF"
-                  title="Form 4"
-                ></iframe>
+    src="https://api.leadconnectorhq.com/widget/form/4KiLBBtIBUpc12ZaKEuF"
+    style="width:100%;height:100%;border:none;border-radius:8px"
+    id="inline-4KiLBBtIBUpc12ZaKEuF" 
+    data-layout="{'id':'INLINE'}"
+    data-trigger-type="alwaysShow"
+    data-trigger-value=""
+    data-activation-type="alwaysActivated"
+    data-activation-value=""
+    data-deactivation-type="neverDeactivate"
+    data-deactivation-value=""
+    data-form-name="Form 4"
+    data-height="728"
+    data-layout-iframe-id="inline-4KiLBBtIBUpc12ZaKEuF"
+    data-form-id="4KiLBBtIBUpc12ZaKEuF"
+    title="Form 4"
+    
+        >
+</iframe>
                 <Script
                   src="https://link.msgsndr.com/js/form_embed.js"
                   strategy="lazyOnload"
