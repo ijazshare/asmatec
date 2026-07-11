@@ -215,38 +215,18 @@ export default function WhatsAppGuidePage() {
         </div>
       </section>
 
-      {/* Migration — mass-move an existing group in privately */}
+      {/* Part 2 — lock it down (before adding anyone) */}
       <section className="py-12 md:py-16 bg-[#f8fafc] border-y border-[#e8edf2]">
-        <div className="container mx-auto px-6 max-w-3xl">
-          <div className="rounded-2xl border border-[#25D366]/30 bg-[#25D366]/[0.06] p-5 md:p-6">
-            <div className="flex items-center gap-2.5 mb-2">
-              <FaWhatsapp className="text-[#1e9c52]" size={20} />
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#1e9c52]">
-                Already have a group? · Optional
-              </p>
-            </div>
-            <h2 className="text-xl md:text-2xl font-bold text-[#0f2137] tracking-tight mb-2">
-              Move everyone in — privately
-            </h2>
-            <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">
-              Migrate a whole existing group into your new private community at
-              once, without members ever seeing each other.
-            </p>
-            <Steps items={migrationSteps} accent="#1e9c52" />
-          </div>
-        </div>
-      </section>
-
-      {/* Part 2 — lock it down */}
-      <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6 max-w-3xl">
           <SectionLabel>Part 2 · Lock it down</SectionLabel>
           <h2 className="text-2xl md:text-3xl font-bold text-[#0f2137] tracking-tight mb-3">
             Admins only — for everything
           </h2>
           <p className="text-[15px] md:text-base text-[#64748b] leading-relaxed mb-5">
-            The part that keeps scammers out. Set privacy and posting first,
-            then who can add people, groups, and share links — for the{" "}
+            Do this <strong className="text-[#0f2137]">before</strong> you add
+            any groups or members, so no one ever lands in an open room. Set
+            privacy and posting first, then who can add people, groups, and
+            share links — for the{" "}
             <strong className="text-[#0f2137]">community</strong>, then for{" "}
             <strong className="text-[#0f2137]">every group inside it</strong>.
           </p>
@@ -274,6 +254,28 @@ export default function WhatsAppGuidePage() {
               />
             </div>
             <PhoneMock />
+          </div>
+        </div>
+      </section>
+
+      {/* Migration — mass-move an existing group in privately (after lockdown) */}
+      <section className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="rounded-2xl border border-[#25D366]/30 bg-[#25D366]/[0.06] p-5 md:p-6">
+            <div className="flex items-center gap-2.5 mb-2">
+              <FaWhatsapp className="text-[#1e9c52]" size={20} />
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#1e9c52]">
+                Already have a group? · Optional
+              </p>
+            </div>
+            <h2 className="text-xl md:text-2xl font-bold text-[#0f2137] tracking-tight mb-2">
+              Move everyone in — privately
+            </h2>
+            <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">
+              Now the community is locked down, move a whole existing group in
+              at once — without members ever seeing each other.
+            </p>
+            <Steps items={migrationSteps} accent="#1e9c52" />
           </div>
         </div>
       </section>
