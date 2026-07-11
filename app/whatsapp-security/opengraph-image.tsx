@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 // Link-preview card shown when the guide is shared (WhatsApp, iMessage, etc.).
 export const alt =
-  "Create a private, scam-proof WhatsApp Community — free guide from AsmaTec";
+  "Keep scammers out of your WhatsApp Community — free guide from AsmaTec";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
