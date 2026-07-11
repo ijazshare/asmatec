@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import WhatsAppGuide from "@/components/WhatsAppGuide";
 
-const GUIDE_URL = "https://asmatec.com/whatsapp";
+const GUIDE_URL = "https://asmatec.com/whatsapp-security";
 
 const DESCRIPTION =
   "Hide members' numbers and lock posting to admins only, so you can share the join link freely and keep scammers out. Free step-by-step guide from AsmaTec.";

@@ -58,7 +58,7 @@ export default function Image() {
             AsmaTec
           </div>
           <div style={{ fontSize: 26, color: "#3b82f6" }}>
-            asmatec.com/whatsapp2
+            asmatec.com/whatsapp-security
           </div>
         </div>
       </div>
