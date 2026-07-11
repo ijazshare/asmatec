@@ -134,9 +134,9 @@ const communitySettings: Setting[] = [
   },
   {
     icon: LinkIcon,
-    setting: "Invite link",
-    value: "Share privately",
-    why: "Anyone who gets the link can ask to join.",
+    setting: "Invite link & QR",
+    value: "Share freely",
+    why: "Numbers are hidden and only admins post, so it's safe to share the link or QR code publicly.",
   },
 ];
 
@@ -163,14 +163,14 @@ const groupSettings: Setting[] = [
   {
     icon: UserCheck,
     setting: "Approve new members",
-    value: "On",
-    why: "You approve every person before they're in.",
+    value: "Off",
+    why: "No need to vet joiners — a locked room is safe to walk into. Skip the friction.",
   },
   {
     icon: LinkIcon,
-    setting: "Invite link",
-    value: "Reset if it leaks",
-    why: "It's the front door — reset it if it spreads too far.",
+    setting: "Invite link & QR",
+    value: "Share freely",
+    why: "Post the link or QR anywhere — new joiners can't see members or post.",
   },
 ];
 
@@ -178,7 +178,6 @@ const mockToggles: { label: string; on: boolean }[] = [
   { label: "Edit group settings", on: false },
   { label: "Send messages", on: false },
   { label: "Add other members", on: false },
-  { label: "Approve new members", on: true },
 ];
 
 export default function WhatsAppGuidePage() {
@@ -194,8 +193,8 @@ export default function WhatsAppGuidePage() {
             Create a WhatsApp Community scammers can&apos;t get into
           </h1>
           <p className="text-[#94a3b8] text-[15px] md:text-base leading-relaxed max-w-2xl">
-            Hide members&apos; numbers and lock posting, joining, and admin
-            controls to admins only — in a few minutes.
+            Hide members&apos; numbers and lock posting and admin controls to
+            admins only — then share the join link and QR code freely.
           </p>
         </div>
       </section>
@@ -287,8 +286,9 @@ export default function WhatsAppGuidePage() {
             <p className="text-[#94a3b8] text-[15px] leading-relaxed max-w-2xl">
               Members get every announcement — but can&apos;t see each
               other&apos;s numbers, can&apos;t post links, and can&apos;t add
-              anyone. A scammer who slips in finds a locked room: no numbers to
-              grab, no way to broadcast, and an admin approving every new face.
+              anyone. So share the join link and QR freely: a scammer who walks
+              in finds a locked room — no numbers to grab, no way to broadcast,
+              and no one to add.
             </p>
           </div>
         </div>
@@ -318,10 +318,10 @@ export default function WhatsAppGuidePage() {
               <Dot />
               <span>
                 <strong className="text-[#0f2137]">
-                  Check back now and then.
+                  Watch your admin list.
                 </strong>{" "}
-                Review your admin list, and reset any invite link that spreads
-                too far.
+                Admins are the only ones who can post or change anything — keep
+                that list to people you trust.
               </span>
             </li>
           </ul>
