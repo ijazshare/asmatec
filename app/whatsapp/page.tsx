@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import {
   ShieldCheck,
-  EyeOff,
   Megaphone,
-  UserX,
   FolderPlus,
   Users,
   UserCheck,
@@ -16,11 +14,9 @@ import {
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import PageCTA from "@/components/PageCTA";
+import CopyLinkButton from "./CopyLinkButton";
 
 const GUIDE_URL = "https://asmatec.com/whatsapp";
-const SHARE_HREF = `https://wa.me/?text=${encodeURIComponent(
-  `Set up a private, scam-proof WhatsApp Community — free step-by-step guide:\n${GUIDE_URL}`,
-)}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://asmatec.com"),
@@ -42,13 +38,6 @@ export const metadata: Metadata = {
       "Hide members' numbers and lock everything to admins only. Free guide from AsmaTec.",
   },
 };
-
-const protections: { icon: LucideIcon; label: string }[] = [
-  { icon: EyeOff, label: "Numbers stay hidden from other members" },
-  { icon: Megaphone, label: "Only admins can post — no scam links" },
-  { icon: UserX, label: "No one can add stranger accounts" },
-  { icon: ShieldCheck, label: "No one can rename the group to fake being you" },
-];
 
 const setupSteps: { title: string; body: React.ReactNode }[] = [
   {
@@ -123,12 +112,13 @@ const migrationSteps: { title: string; body: React.ReactNode }[] = [
 
 type Setting = { icon: LucideIcon; setting: string; value: string; why: string };
 
+// Privacy / posting first, then who can add groups, then the invite link last.
 const communitySettings: Setting[] = [
   {
-    icon: FolderPlus,
-    setting: "Who can add groups",
-    value: "Only admins",
-    why: "So no one can attach a scam group to your community.",
+    icon: Megaphone,
+    setting: "Announcement group",
+    value: "Admins post, members read",
+    why: "Members react but can't post links to everyone.",
   },
   {
     icon: Users,
@@ -137,19 +127,20 @@ const communitySettings: Setting[] = [
     why: "Admins can do everything — keep the list tiny.",
   },
   {
-    icon: Megaphone,
-    setting: "Announcement group",
-    value: "Admins post, members read",
-    why: "Members react but can't post links to everyone.",
+    icon: FolderPlus,
+    setting: "Who can add groups",
+    value: "Only admins",
+    why: "So no one can attach a scam group to your community.",
   },
   {
-    icon: UserCheck,
+    icon: LinkIcon,
     setting: "Invite link",
     value: "Share privately",
     why: "Anyone who gets the link can ask to join.",
   },
 ];
 
+// Posting / anti-impersonation first, then adding people, then the invite link last.
 const groupSettings: Setting[] = [
   {
     icon: Megaphone,
@@ -183,7 +174,6 @@ const groupSettings: Setting[] = [
   },
 ];
 
-// The four toggles as they should look on the Group permissions screen.
 const mockToggles: { label: string; on: boolean }[] = [
   { label: "Edit group settings", on: false },
   { label: "Send messages", on: false },
@@ -194,140 +184,109 @@ const mockToggles: { label: string; on: boolean }[] = [
 export default function WhatsAppGuidePage() {
   return (
     <main className="pt-14">
-      {/* Hero */}
-      <section className="bg-[#0A1A2F] py-20 md:py-28 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-5 leading-tight">
+      {/* Compact header */}
+      <section className="bg-[#0A1A2F] px-4 py-11 md:py-14">
+        <div className="container mx-auto max-w-3xl">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3b82f6] mb-3">
+            WhatsApp Communities · Free guide
+          </p>
+          <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight mb-3">
             Create a WhatsApp Community scammers can&apos;t get into
           </h1>
-          <p className="text-[#94a3b8] text-base md:text-lg leading-relaxed max-w-3xl mb-8">
-            Scammers love open WhatsApp groups — they grab members&apos; phone
-            numbers, message people privately, and post fake links. Here&apos;s
-            how to set up a Community where numbers stay hidden and only admins
-            can post, add people, or add groups.
+          <p className="text-[#94a3b8] text-[15px] md:text-base leading-relaxed mb-6 max-w-2xl">
+            Hide members&apos; numbers and lock posting, joining, and admin
+            controls to admins only — in a few minutes.
           </p>
-          <ShareButton />
-        </div>
-      </section>
-
-      {/* What this protects */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto">
-            <SectionLabel>What this protects</SectionLabel>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0f2137] tracking-tight mb-8">
-              A room scammers can&apos;t work
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {protections.map(({ icon: Icon, label }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-4 bg-white rounded-xl border border-[#e2e8f0] card-shadow p-5"
-                >
-                  <span className="flex-shrink-0 w-11 h-11 rounded-md bg-[#E8F1FB] flex items-center justify-center">
-                    <Icon className="h-5 w-5 text-[#3b82f6]" strokeWidth={1.5} />
-                  </span>
-                  <span className="text-[15px] font-medium text-[#374151] leading-snug">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <CopyLinkButton
+            url={GUIDE_URL}
+            className="bg-white text-[#0A1A2F] hover:bg-white/90"
+          />
         </div>
       </section>
 
       {/* Part 1 — set up */}
-      <section className="py-16 md:py-24 bg-[#f8fafc] border-y border-[#e8edf2]">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto">
-            <SectionLabel>Part 1 · Set it up</SectionLabel>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0f2137] tracking-tight mb-10">
-              Build the community
-            </h2>
-            <Steps items={setupSteps} accent="#0A1A2F" />
-          </div>
+      <section className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <SectionLabel>Part 1 · Set it up</SectionLabel>
+          <h2 className="text-2xl md:text-3xl font-bold text-[#0f2137] tracking-tight mb-6">
+            Build the community
+          </h2>
+          <Steps items={setupSteps} accent="#0A1A2F" />
         </div>
       </section>
 
       {/* Migration — mass-move an existing group in privately */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto">
-            <div className="rounded-2xl border border-[#25D366]/30 bg-[#25D366]/[0.06] p-6 md:p-8">
-              <div className="flex items-center gap-2.5 mb-3">
-                <FaWhatsapp className="text-[#1e9c52]" size={22} />
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#1e9c52]">
-                  Already have a group? · Optional
-                </p>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#0f2137] tracking-tight mb-2">
-                Move everyone in — privately
-              </h2>
-              <p className="text-[15px] text-[#64748b] leading-relaxed mb-8">
-                This is how you migrate a whole existing group into your new
-                private community at once, without members ever seeing each
-                other.
+      <section className="py-12 md:py-16 bg-[#f8fafc] border-y border-[#e8edf2]">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="rounded-2xl border border-[#25D366]/30 bg-[#25D366]/[0.06] p-5 md:p-6">
+            <div className="flex items-center gap-2.5 mb-2">
+              <FaWhatsapp className="text-[#1e9c52]" size={20} />
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#1e9c52]">
+                Already have a group? · Optional
               </p>
-              <Steps items={migrationSteps} accent="#1e9c52" />
             </div>
+            <h2 className="text-xl md:text-2xl font-bold text-[#0f2137] tracking-tight mb-2">
+              Move everyone in — privately
+            </h2>
+            <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">
+              Migrate a whole existing group into your new private community at
+              once, without members ever seeing each other.
+            </p>
+            <Steps items={migrationSteps} accent="#1e9c52" />
           </div>
         </div>
       </section>
 
       {/* Part 2 — lock it down */}
-      <section className="py-16 md:py-24 bg-[#f8fafc] border-y border-[#e8edf2]">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto">
-            <SectionLabel>Part 2 · Lock it down</SectionLabel>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0f2137] tracking-tight mb-4">
-              Admins only — for everything
-            </h2>
-            <p className="text-[15px] md:text-base text-[#64748b] leading-relaxed mb-6">
-              This is the part that keeps scammers out. Go through the settings
-              below — first for the{" "}
-              <strong className="text-[#0f2137]">community</strong>, then for{" "}
-              <strong className="text-[#0f2137]">every group inside it</strong>.
-              Set each one to the value on the right.
-            </p>
+      <section className="py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <SectionLabel>Part 2 · Lock it down</SectionLabel>
+          <h2 className="text-2xl md:text-3xl font-bold text-[#0f2137] tracking-tight mb-3">
+            Admins only — for everything
+          </h2>
+          <p className="text-[15px] md:text-base text-[#64748b] leading-relaxed mb-5">
+            The part that keeps scammers out. Set privacy and posting first,
+            then who can add people, groups, and share links — for the{" "}
+            <strong className="text-[#0f2137]">community</strong>, then for{" "}
+            <strong className="text-[#0f2137]">every group inside it</strong>.
+          </p>
 
-            <PlatformNote />
+          <PlatformNote />
 
-            <div className="mt-8 grid md:grid-cols-[minmax(0,1fr)_260px] gap-8 items-start">
-              <div className="space-y-6 min-w-0">
-                <SettingsCard
-                  badge="Community settings"
-                  icon={Users}
-                  howTo="Tap the community name at the top → Settings"
-                  items={communitySettings}
-                />
-                <SettingsCard
-                  badge="Each group's settings"
-                  icon={ShieldCheck}
-                  howTo={
-                    <>
-                      Open a group → tap its name → <Kbd>Group permissions</Kbd>
-                    </>
-                  }
-                  items={groupSettings}
-                  note="Do this for the default group and every other group you keep in the community."
-                />
-              </div>
-              <PhoneMock />
+          <div className="mt-6 grid md:grid-cols-[minmax(0,1fr)_240px] gap-6 items-start">
+            <div className="space-y-5 min-w-0">
+              <SettingsCard
+                badge="Community settings"
+                icon={Users}
+                howTo="Tap the community name at the top → Settings"
+                items={communitySettings}
+              />
+              <SettingsCard
+                badge="Each group's settings"
+                icon={ShieldCheck}
+                howTo={
+                  <>
+                    Open a group → tap its name → <Kbd>Group permissions</Kbd>
+                  </>
+                }
+                items={groupSettings}
+                note="Do this for the default group and every other group you keep in the community."
+              />
             </div>
+            <PhoneMock />
           </div>
         </div>
       </section>
 
       {/* Result */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-[#0A1A2F] via-[#0d2a4a] to-[#0A1A2F] p-8 md:p-10">
-            <CheckCircle2 className="h-8 w-8 text-[#25D366] mb-4" />
-            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-3">
+      <section className="py-12 md:py-16 bg-[#f8fafc] border-y border-[#e8edf2]">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="rounded-2xl bg-gradient-to-r from-[#0A1A2F] via-[#0d2a4a] to-[#0A1A2F] p-6 md:p-8">
+            <CheckCircle2 className="h-7 w-7 text-[#25D366] mb-3" />
+            <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-2">
               You&apos;re done
             </h2>
-            <p className="text-[#94a3b8] text-[15px] md:text-base leading-relaxed max-w-2xl">
+            <p className="text-[#94a3b8] text-[15px] leading-relaxed max-w-2xl">
               Members get every announcement — but can&apos;t see each
               other&apos;s numbers, can&apos;t post links, and can&apos;t add
               anyone. A scammer who slips in finds a locked room: no numbers to
@@ -338,54 +297,55 @@ export default function WhatsAppGuidePage() {
       </section>
 
       {/* Good to know */}
-      <section className="py-14 md:py-20 bg-[#f8fafc] border-t border-[#e8edf2]">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto">
-            <SectionLabel>Good to know</SectionLabel>
-            <ul className="space-y-3 text-[15px] text-[#64748b] leading-relaxed">
-              <li className="flex gap-3">
-                <Dot />
-                <span>
-                  <strong className="text-[#0f2137]">Your number shows.</strong>{" "}
-                  As the owner, members can see your number — that can&apos;t be
-                  hidden.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <Dot />
-                <span>
-                  <strong className="text-[#0f2137]">Update WhatsApp</strong>{" "}
-                  first, so all the privacy and permission options appear.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <Dot />
-                <span>
-                  <strong className="text-[#0f2137]">
-                    Check back now and then.
-                  </strong>{" "}
-                  Review your admin list, and reset any invite link that spreads
-                  too far.
-                </span>
-              </li>
-            </ul>
-          </div>
+      <section className="py-10 md:py-14 bg-white">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <SectionLabel>Good to know</SectionLabel>
+          <ul className="space-y-2.5 text-[15px] text-[#64748b] leading-relaxed">
+            <li className="flex gap-3">
+              <Dot />
+              <span>
+                <strong className="text-[#0f2137]">Your number shows.</strong>{" "}
+                As the owner, members can see your number — that can&apos;t be
+                hidden.
+              </span>
+            </li>
+            <li className="flex gap-3">
+              <Dot />
+              <span>
+                <strong className="text-[#0f2137]">Update WhatsApp</strong>{" "}
+                first, so all the privacy and permission options appear.
+              </span>
+            </li>
+            <li className="flex gap-3">
+              <Dot />
+              <span>
+                <strong className="text-[#0f2137]">
+                  Check back now and then.
+                </strong>{" "}
+                Review your admin list, and reset any invite link that spreads
+                too far.
+              </span>
+            </li>
+          </ul>
         </div>
       </section>
 
       {/* Share strip */}
-      <section className="py-14 bg-white">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 rounded-2xl border border-[#e2e8f0] card-shadow p-6 md:p-8">
+      <section className="py-10 bg-[#f8fafc] border-t border-[#e8edf2]">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-[#e2e8f0] card-shadow p-5 md:p-6">
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-[#0f2137] tracking-tight mb-1">
+              <h2 className="text-lg md:text-xl font-bold text-[#0f2137] tracking-tight mb-0.5">
                 Know someone who needs this?
               </h2>
-              <p className="text-[15px] text-[#64748b]">
-                Send them the guide and help shut the scammers out.
+              <p className="text-[14px] text-[#64748b]">
+                Copy the link and send them the guide.
               </p>
             </div>
-            <ShareButton />
+            <CopyLinkButton
+              url={GUIDE_URL}
+              className="bg-[#1E81EF] text-white hover:bg-[#1E81EF]/90"
+            />
           </div>
         </div>
       </section>
@@ -399,20 +359,6 @@ export default function WhatsAppGuidePage() {
   );
 }
 
-function ShareButton() {
-  return (
-    <a
-      href={SHARE_HREF}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#25D366]/90 text-white font-semibold px-6 py-3.5 rounded-lg shadow-lg shadow-green-500/20 transition-colors"
-    >
-      <FaWhatsapp size={20} />
-      Share this guide
-    </a>
-  );
-}
-
 function Steps({
   items,
   accent,
@@ -421,20 +367,20 @@ function Steps({
   accent: string;
 }) {
   return (
-    <ol className="space-y-4">
+    <ol className="space-y-3">
       {items.map((step, i) => (
         <li
           key={step.title}
-          className="flex gap-5 bg-white rounded-xl border border-[#e2e8f0] card-shadow p-6"
+          className="flex gap-4 bg-white rounded-xl border border-[#e2e8f0] card-shadow p-5"
         >
           <span
-            className="flex-shrink-0 w-10 h-10 rounded-full text-white flex items-center justify-center font-heading font-bold"
+            className="flex-shrink-0 w-9 h-9 rounded-full text-white flex items-center justify-center font-heading font-bold text-sm"
             style={{ backgroundColor: accent }}
           >
             {i + 1}
           </span>
           <div>
-            <h3 className="text-[17px] font-bold text-[#0f2137] mb-1.5">
+            <h3 className="text-[16px] font-bold text-[#0f2137] mb-1">
               {step.title}
             </h3>
             <p className="text-[15px] text-[#64748b] leading-relaxed">
@@ -449,16 +395,15 @@ function Steps({
 
 function PlatformNote() {
   return (
-    <div className="flex items-start gap-3 rounded-xl bg-[#eff6ff] border border-[#dbeafe] px-5 py-4">
+    <div className="flex items-start gap-3 rounded-xl bg-[#eff6ff] border border-[#dbeafe] px-4 py-3">
       <Smartphone
         className="h-5 w-5 text-[#1e73dc] flex-shrink-0 mt-0.5"
         strokeWidth={1.75}
       />
-      <p className="text-[14px] text-[#1e3a5f] leading-relaxed">
+      <p className="text-[13px] text-[#1e3a5f] leading-relaxed">
         <strong>iPhone &amp; Android are the same</strong> — only two names
         differ. Android says <em>Group permissions</em> and <em>members</em>;
-        iPhone says <em>Group Settings</em> and <em>participants</em>. Pick the
-        closest match you see.
+        iPhone says <em>Group Settings</em> and <em>participants</em>.
       </p>
     </div>
   );
@@ -466,9 +411,9 @@ function PlatformNote() {
 
 function PhoneMock() {
   return (
-    <figure className="mx-auto w-full max-w-[260px] md:sticky md:top-24">
-      <div className="rounded-[2rem] border-[6px] border-[#0A1A2F] bg-white overflow-hidden shadow-xl">
-        <div className="bg-[#0A1A2F] text-white px-4 py-3">
+    <figure className="mx-auto w-full max-w-[240px] md:sticky md:top-24">
+      <div className="rounded-[1.75rem] border-[6px] border-[#0A1A2F] bg-white overflow-hidden shadow-xl">
+        <div className="bg-[#0A1A2F] text-white px-4 py-2.5">
           <p className="text-[11px] text-[#94a3b8]">Group permissions</p>
           <p className="text-[13px] font-semibold">Only admins can…</p>
         </div>
@@ -476,7 +421,7 @@ function PhoneMock() {
           {mockToggles.map(({ label, on }) => (
             <li
               key={label}
-              className="flex items-center justify-between gap-3 px-4 py-3.5"
+              className="flex items-center justify-between gap-3 px-4 py-3"
             >
               <span className="text-[13px] font-medium text-[#0f2137] leading-tight">
                 {label}
@@ -486,7 +431,7 @@ function PhoneMock() {
           ))}
         </ul>
       </div>
-      <figcaption className="text-[12px] text-[#94a3b8] text-center mt-3 leading-relaxed">
+      <figcaption className="text-[12px] text-[#94a3b8] text-center mt-2.5 leading-relaxed">
         How your screen should look. <strong>Grey = locked to admins.</strong>
       </figcaption>
     </figure>
@@ -520,20 +465,20 @@ function SettingsCard({
 }) {
   return (
     <div className="bg-white rounded-xl border border-[#e2e8f0] card-shadow overflow-hidden">
-      <div className="bg-[#0A1A2F] px-6 py-4">
+      <div className="bg-[#0A1A2F] px-5 py-3.5">
         <div className="flex items-center gap-3">
           <Icon className="h-5 w-5 text-[#1E81EF]" strokeWidth={1.75} />
           <h3 className="text-white font-heading font-bold text-[15px] tracking-tight">
             {badge}
           </h3>
         </div>
-        <p className="text-[13px] text-[#94a3b8] mt-1.5 pl-8">{howTo}</p>
+        <p className="text-[13px] text-[#94a3b8] mt-1 pl-8">{howTo}</p>
       </div>
       <ul className="divide-y divide-[#eef1f6]">
         {items.map(({ icon: RowIcon, setting, value, why }) => (
           <li
             key={setting}
-            className="px-6 py-4 flex items-start gap-4 sm:items-center"
+            className="px-5 py-3.5 flex items-start gap-3.5 sm:items-center"
           >
             <span className="flex-shrink-0 w-9 h-9 rounded-md bg-[#E8F1FB] flex items-center justify-center">
               <RowIcon className="h-4 w-4 text-[#3b82f6]" strokeWidth={1.75} />
@@ -553,7 +498,7 @@ function SettingsCard({
         ))}
       </ul>
       {note && (
-        <p className="px-6 py-4 bg-[#f8fafc] border-t border-[#eef1f6] text-[13px] text-[#64748b] leading-relaxed">
+        <p className="px-5 py-3.5 bg-[#f8fafc] border-t border-[#eef1f6] text-[13px] text-[#64748b] leading-relaxed">
           {note}
         </p>
       )}
@@ -563,7 +508,7 @@ function SettingsCard({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3b82f6] mb-3">
+    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3b82f6] mb-2.5">
       {children}
     </p>
   );
