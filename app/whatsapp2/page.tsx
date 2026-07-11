@@ -36,11 +36,12 @@ const steps: { title: string; body: React.ReactNode }[] = [
     ),
   },
   {
-    title: "Hide everyone's numbers",
+    title: "Check numbers are hidden",
     body: (
       <>
-        In the group settings, turn on <strong>Phone number privacy</strong> so
-        members can&apos;t see each other&apos;s numbers.
+        <strong>Phone number privacy</strong> is on by default and can&apos;t
+        be turned off — but open the group settings and confirm. It hides
+        members&apos; numbers from each other.
       </>
     ),
   },
