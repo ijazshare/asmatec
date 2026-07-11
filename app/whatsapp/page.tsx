@@ -193,14 +193,10 @@ export default function WhatsAppGuidePage() {
           <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight mb-3">
             Create a WhatsApp Community scammers can&apos;t get into
           </h1>
-          <p className="text-[#94a3b8] text-[15px] md:text-base leading-relaxed mb-6 max-w-2xl">
+          <p className="text-[#94a3b8] text-[15px] md:text-base leading-relaxed max-w-2xl">
             Hide members&apos; numbers and lock posting, joining, and admin
             controls to admins only — in a few minutes.
           </p>
-          <CopyLinkButton
-            url={GUIDE_URL}
-            className="bg-white text-[#0A1A2F] hover:bg-white/90"
-          />
         </div>
       </section>
 
