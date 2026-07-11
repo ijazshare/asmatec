@@ -8,20 +8,20 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://asmatec.com"),
   title: "Create a Private, Scam-Proof WhatsApp Community | AsmaTec",
   description:
-    "The quick version: 5 steps to a private WhatsApp Community where phone numbers stay hidden and only admins can post — so scammers can't get in.",
+    "Hide members' numbers and lock posting to admins only, so you can share the join link freely and keep scammers out. Free step-by-step guide from AsmaTec.",
   alternates: { canonical: GUIDE_URL },
   openGraph: {
     type: "article",
     url: GUIDE_URL,
     title: "Create a Private, Scam-Proof WhatsApp Community",
     description:
-      "Hide members' numbers, lock posting to admins only, and share the join link freely. Free quick-start guide from AsmaTec.",
+      "Hide members' numbers and lock posting to admins only, so you can share the join link freely and keep scammers out. Free step-by-step guide from AsmaTec.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Create a Private, Scam-Proof WhatsApp Community",
     description:
-      "The quick version: 5 steps to a private, scam-proof WhatsApp Community.",
+      "Hide members' numbers and lock posting to admins only, so you can share the join link freely and keep scammers out. Free step-by-step guide from AsmaTec.",
   },
 };
 
