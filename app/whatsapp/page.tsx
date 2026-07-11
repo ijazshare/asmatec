@@ -8,18 +8,18 @@ const DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://asmatec.com"),
-  title: "Create a Private, Scam-Proof WhatsApp Community | AsmaTec",
+  title: "Keep Scammers Out of Your WhatsApp Community | AsmaTec",
   description: DESCRIPTION,
   alternates: { canonical: GUIDE_URL },
   openGraph: {
     type: "article",
     url: GUIDE_URL,
-    title: "Create a Private, Scam-Proof WhatsApp Community",
+    title: "Keep Scammers Out of Your WhatsApp Community",
     description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Create a Private, Scam-Proof WhatsApp Community",
+    title: "Keep Scammers Out of Your WhatsApp Community",
     description: DESCRIPTION,
   },
 };
