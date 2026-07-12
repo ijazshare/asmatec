@@ -7,7 +7,7 @@ import {
   UserPlus,
   Settings,
   Link as LinkIcon,
-  TriangleAlert,
+  Unlink,
   CheckCircle2,
   Smartphone,
   type LucideIcon,
@@ -116,38 +116,38 @@ const setupSteps: { title: string; body: React.ReactNode; shots: Shot[] }[] = [
   },
 ];
 
-const migrationSteps: { title: string; body: React.ReactNode; shot: Shot }[] = [
+const migrationSteps: { title: string; body: React.ReactNode; shot?: Shot }[] = [
   {
-    title: "Add your existing group",
+    title: "Add your group as Hidden",
     body: (
       <>
-        In the community, tap <strong>Add group</strong> → pick the group you
-        already run. Everyone in it gets pulled into the community.
-      </>
-    ),
-    shot: IMG.addExisting,
-  },
-  {
-    title: "Choose Hidden",
-    body: (
-      <>
-        When asked, set visibility to <strong>Hidden</strong> — the group stays
-        off the community&apos;s group list, so people already in the community
-        can&apos;t browse it.{" "}
+        Add the group you already run and choose <strong>Hidden</strong>, so
+        people already in the community can&apos;t browse it while you set up.{" "}
         <span className="text-[#64748b]">Can&apos;t be changed later.</span>
       </>
     ),
     shot: IMG.hideConfirm,
   },
   {
-    title: "Everyone's imported — quietly",
+    title: "Everyone's imported",
     body: (
       <>
-        The whole group is now in the community and the{" "}
+        The whole group is pulled into the community and the{" "}
         <strong>Announcement</strong> group, numbers hidden from each other.
       </>
     ),
     shot: IMG.addedHidden,
+  },
+  {
+    title: "Remove the group — keep the people",
+    body: (
+      <>
+        Now remove the group. When WhatsApp asks, choose{" "}
+        <strong>keep the people in the community</strong> (remove the group
+        only). The group unlinks and works on its own again — everyone you
+        imported stays in the Announcement group.
+      </>
+    ),
   },
 ];
 
@@ -339,8 +339,9 @@ export default function WhatsAppGuideDraft({ guideUrl }: { guideUrl: string }) {
             </h2>
             <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">
               Already run a group? Move its members into your announcement
-              channel all at once — with everyone&apos;s number hidden, and
-              without people already in the community seeing the group.
+              channel all at once — numbers hidden, members can&apos;t see each
+              other, and it stays out of view of people already in the community
+              while you set it up.
             </p>
             <div className="grid gap-5 sm:grid-cols-3">
               {migrationSteps.map((step, i) => (
@@ -358,24 +359,28 @@ export default function WhatsAppGuideDraft({ guideUrl }: { guideUrl: string }) {
                     {step.body}
                   </p>
                   <div className="mt-auto">
-                    <Phone shot={step.shot} />
+                    {step.shot ? (
+                      <Phone shot={step.shot} />
+                    ) : (
+                      <StepPlaceholder
+                        icon={Unlink}
+                        label="Remove group → “Keep members in community”"
+                      />
+                    )}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-5 flex items-start gap-3 rounded-xl bg-white border border-[#f59e0b]/40 px-4 py-3">
-              <TriangleAlert
-                className="h-5 w-5 text-[#d97706] flex-shrink-0 mt-0.5"
+            <div className="mt-5 flex items-start gap-3 rounded-xl bg-white border border-[#25D366]/40 px-4 py-3">
+              <CheckCircle2
+                className="h-5 w-5 text-[#1e9c52] flex-shrink-0 mt-0.5"
                 strokeWidth={1.75}
               />
-              <p className="text-[13px] text-[#7c5312] leading-relaxed">
-                <strong>Leave the group linked.</strong> Don&apos;t remove or
-                unlink it afterward — WhatsApp drops those members from the
-                community when you do. Keeping it Hidden holds them quietly. One
-                trade-off: inside this carried-over group members still see each
-                other&apos;s names (numbers stay hidden). For a channel where
-                members can&apos;t see each other at all, have people join via
-                the shared link instead of migrating a group.
+              <p className="text-[13px] text-[#3f6b4e] leading-relaxed">
+                <strong>The end result:</strong> your imported members are now
+                in the Announcement group only — so they can&apos;t see each
+                other, and their numbers stay hidden. The group you removed is a
+                normal standalone group again — keep it or delete it.
               </p>
             </div>
           </div>
@@ -493,6 +498,22 @@ function Phone({ shot }: { shot: Shot }) {
       </div>
       <figcaption className="mt-2.5 text-center text-[12px] text-[#64748b] leading-snug">
         {shot.cap}
+      </figcaption>
+    </figure>
+  );
+}
+
+function StepPlaceholder({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
+  return (
+    <figure className="mx-auto w-full max-w-[220px]">
+      <div className="rounded-[1.75rem] border-[3px] border-dashed border-[#cbd5e1] bg-[#f8fafc] aspect-[720/1400] flex flex-col items-center justify-center gap-3 px-5 text-center">
+        <Icon className="h-9 w-9 text-[#94a3b8]" strokeWidth={1.5} />
+        <span className="text-[12px] font-semibold text-[#64748b] leading-snug">
+          {label}
+        </span>
+      </div>
+      <figcaption className="mt-2.5 text-center text-[12px] text-[#94a3b8] leading-snug">
+        Screenshot needed for this step.
       </figcaption>
     </figure>
   );
