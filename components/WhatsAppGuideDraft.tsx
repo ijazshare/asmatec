@@ -7,7 +7,6 @@ import {
   UserPlus,
   Settings,
   Link as LinkIcon,
-  Unlink,
   CheckCircle2,
   Smartphone,
   type LucideIcon,
@@ -19,7 +18,7 @@ import CopyLinkButton from "@/components/CopyLinkButton";
 // ── Screenshots ────────────────────────────────────────────────
 type Shot = { src: string; w: number; h: number; cap: string };
 // Bump when the screenshots change, to bust browser/CDN cache of the stable filenames.
-const V = "2";
+const V = "3";
 const shot = (n: string, cap: string, h = 1559): Shot => ({
   src: `/whatsapp-guide/${n}.webp?v=${V}`,
   w: 720,
@@ -77,6 +76,10 @@ const IMG = {
     "12-group-added-hidden",
     "The group is now inside the community, marked hidden (eye-slash).",
   ),
+  removeKeep: shot(
+    "13-remove-keep-members",
+    "Tap Remove group (keeps the people) — not Remove group and members.",
+  ),
 };
 
 // ── Copy ───────────────────────────────────────────────────────
@@ -118,7 +121,7 @@ const setupSteps: { title: string; body: React.ReactNode; shots: Shot[] }[] = [
   },
 ];
 
-const migrationSteps: { title: string; body: React.ReactNode; shot?: Shot }[] = [
+const migrationSteps: { title: string; body: React.ReactNode; shot: Shot }[] = [
   {
     title: "Add your group as Hidden",
     body: (
@@ -144,12 +147,13 @@ const migrationSteps: { title: string; body: React.ReactNode; shot?: Shot }[] = 
     title: "Remove the group — keep the people",
     body: (
       <>
-        Now remove the group. When WhatsApp asks, choose{" "}
-        <strong>keep the people in the community</strong> (remove the group
-        only). The group unlinks and works on its own again — everyone you
-        imported stays in the Announcement group.
+        Remove the group: tap <Kbd>⋯</Kbd> → <strong>Remove from community</strong>,
+        then <strong>Remove group</strong> (not <em>Remove group and members</em>).
+        It unlinks and works on its own again — everyone you imported stays in
+        the Announcement group.
       </>
     ),
+    shot: IMG.removeKeep,
   },
 ];
 
@@ -361,14 +365,7 @@ export default function WhatsAppGuideDraft({ guideUrl }: { guideUrl: string }) {
                     {step.body}
                   </p>
                   <div className="mt-auto">
-                    {step.shot ? (
-                      <Phone shot={step.shot} />
-                    ) : (
-                      <StepPlaceholder
-                        icon={Unlink}
-                        label="Remove group → “Keep members in community”"
-                      />
-                    )}
+                    <Phone shot={step.shot} />
                   </div>
                 </div>
               ))}
@@ -500,22 +497,6 @@ function Phone({ shot }: { shot: Shot }) {
       </div>
       <figcaption className="mt-2.5 text-center text-[12px] text-[#64748b] leading-snug">
         {shot.cap}
-      </figcaption>
-    </figure>
-  );
-}
-
-function StepPlaceholder({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
-  return (
-    <figure className="mx-auto w-full max-w-[220px]">
-      <div className="rounded-[1.75rem] border-[3px] border-dashed border-[#cbd5e1] bg-[#f8fafc] aspect-[720/1400] flex flex-col items-center justify-center gap-3 px-5 text-center">
-        <Icon className="h-9 w-9 text-[#94a3b8]" strokeWidth={1.5} />
-        <span className="text-[12px] font-semibold text-[#64748b] leading-snug">
-          {label}
-        </span>
-      </div>
-      <figcaption className="mt-2.5 text-center text-[12px] text-[#94a3b8] leading-snug">
-        Screenshot needed for this step.
       </figcaption>
     </figure>
   );
