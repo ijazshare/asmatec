@@ -18,8 +18,10 @@ import CopyLinkButton from "@/components/CopyLinkButton";
 
 // ── Screenshots ────────────────────────────────────────────────
 type Shot = { src: string; w: number; h: number; cap: string };
+// Bump when the screenshots change, to bust browser/CDN cache of the stable filenames.
+const V = "2";
 const shot = (n: string, cap: string, h = 1559): Shot => ({
-  src: `/whatsapp-guide/${n}.webp`,
+  src: `/whatsapp-guide/${n}.webp?v=${V}`,
   w: 720,
   h,
   cap,
