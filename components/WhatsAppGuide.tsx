@@ -16,11 +16,11 @@ import PageCTA from "@/components/PageCTA";
 import CopyLinkButton from "@/components/CopyLinkButton";
 
 // ── Screenshots ────────────────────────────────────────────────
-// Ordered by the workflow that classified all 17 raw shots and mapped
-// the 12 keepers to guide steps. Files live in /public/whatsapp-guide.
 type Shot = { src: string; w: number; h: number; cap: string };
+// Bump when the screenshots change, to bust browser/CDN cache of the stable filenames.
+const V = "3";
 const shot = (n: string, cap: string, h = 1559): Shot => ({
-  src: `/whatsapp-guide/${n}.webp`,
+  src: `/whatsapp-guide/${n}.webp?v=${V}`,
   w: 720,
   h,
   cap,
@@ -37,7 +37,7 @@ const IMG = {
   ),
   deactivateGeneral: shot(
     "03-deactivate-general",
-    "Open General → scroll down → Deactivate group to remove it.",
+    "Open General → Deactivate group — then you can delete it.",
   ),
   phonePrivacy: shot(
     "04-phone-privacy",
@@ -76,9 +76,13 @@ const IMG = {
     "12-group-added-hidden",
     "The group is now inside the community, marked hidden (eye-slash).",
   ),
+  removeKeep: shot(
+    "13-remove-keep-members",
+    "Tap Remove group (keeps the people) — not Remove group and members.",
+  ),
 };
 
-// ── Copy (mirrors the text-only guide) ─────────────────────────
+// ── Copy ───────────────────────────────────────────────────────
 const setupSteps: { title: string; body: React.ReactNode; shots: Shot[] }[] = [
   {
     title: "Create the community",
@@ -92,12 +96,13 @@ const setupSteps: { title: string; body: React.ReactNode; shots: Shot[] }[] = [
     shots: [IMG.createCommunity, IMG.adminConfirm],
   },
   {
-    title: "Keep or delete the General group",
+    title: "Delete the General group",
     body: (
       <>
-        Just want a broadcast? Open <strong>General</strong> and delete it —
-        everyone stays in Announcement. Want members to chat? Keep it, and lock
-        it down in Part 2.
+        This is a <strong>one-way channel</strong>, so remove the members&apos;
+        chat group. Open <strong>General</strong>, tap <strong>Deactivate</strong>{" "}
+        — then you can delete it. Everyone stays in the{" "}
+        <strong>Announcement</strong> group.
       </>
     ),
     shots: [IMG.deactivateGeneral],
@@ -106,9 +111,9 @@ const setupSteps: { title: string; body: React.ReactNode; shots: Shot[] }[] = [
     title: "Check numbers are hidden",
     body: (
       <>
-        <strong>Phone number privacy</strong> is on by default and can&apos;t
-        be turned off — it hides members&apos; numbers from each other. Just
-        open the group settings and confirm it&apos;s there.{" "}
+        <strong>Phone number privacy</strong> is on by default — it hides
+        members&apos; numbers from each other. Open the group settings and
+        confirm it&apos;s on.{" "}
         <span className="text-[#64748b]">Yours, as the owner, still shows.</span>
       </>
     ),
@@ -118,35 +123,37 @@ const setupSteps: { title: string; body: React.ReactNode; shots: Shot[] }[] = [
 
 const migrationSteps: { title: string; body: React.ReactNode; shot: Shot }[] = [
   {
-    title: "Add your existing group as Hidden",
+    title: "Add your group as Hidden",
     body: (
       <>
-        Add the group you already run into the community. When asked for
-        visibility, choose <strong>Hidden</strong> — current members won&apos;t
-        see it. <span className="text-[#64748b]">It can&apos;t be changed later.</span>
-      </>
-    ),
-    shot: IMG.addExisting,
-  },
-  {
-    title: "Confirm the Hidden choice",
-    body: (
-      <>
-        WhatsApp warns you the choice is permanent. Confirm to bring the whole
-        group in <strong>without members seeing each other</strong>.
+        Add the group you already run and choose <strong>Hidden</strong>, so
+        people already in the community can&apos;t browse it while you set up.{" "}
+        <span className="text-[#64748b]">Can&apos;t be changed later.</span>
       </>
     ),
     shot: IMG.hideConfirm,
   },
   {
-    title: "Everyone's in — quietly",
+    title: "Everyone's imported",
     body: (
       <>
-        Your whole group is now inside the private community with numbers
-        hidden. Repeat for each group you want to move in.
+        The whole group is pulled into the community and the{" "}
+        <strong>Announcement</strong> group, numbers hidden from each other.
       </>
     ),
     shot: IMG.addedHidden,
+  },
+  {
+    title: "Remove the group — keep the people",
+    body: (
+      <>
+        Remove the group: tap <Kbd>⋯</Kbd> → <strong>Remove from community</strong>,
+        then <strong>Remove group</strong> (not <em>Remove group and members</em>).
+        It unlinks and works on its own again — everyone you imported stays in
+        the Announcement group.
+      </>
+    ),
+    shot: IMG.removeKeep,
   },
 ];
 
@@ -163,7 +170,13 @@ const communitySettings: Setting[] = [
     icon: Users,
     setting: "Community admins",
     value: "Trusted people only",
-    why: "Admins can do everything — keep the list tiny.",
+    why: "Admins can do everything — and can see every member's number. Keep the list tiny.",
+  },
+  {
+    icon: UserPlus,
+    setting: "Who can add members",
+    value: "Only admins",
+    why: "People join themselves via the link — members can't hand-pick who else gets pulled in.",
   },
   {
     icon: FolderPlus,
@@ -196,7 +209,7 @@ const groupSettings: Setting[] = [
     icon: UserPlus,
     setting: "Add other members",
     value: "Only admins",
-    why: "Members can't pull in strangers.",
+    why: "Members can't quietly add their own contacts — everyone joins the same way, via the link.",
   },
   {
     icon: UserCheck,
@@ -208,7 +221,7 @@ const groupSettings: Setting[] = [
     icon: LinkIcon,
     setting: "Invite link & QR",
     value: "Share freely",
-    why: "Post the link or QR anywhere — new joiners can't see members or post.",
+    why: "Post the link or QR anywhere — new joiners can't see who else is in the channel, grab numbers, or post.",
   },
 ];
 
@@ -219,15 +232,16 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
       <section className="bg-[#0A1A2F] px-4 py-11 md:py-14">
         <div className="container mx-auto max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3b82f6] mb-3">
-            WhatsApp Communities · Illustrated guide
+            WhatsApp Communities · One-way announcement channel
           </p>
           <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight mb-3">
             Create a WhatsApp Community scammers can&apos;t get into
           </h1>
           <p className="text-[#94a3b8] text-[15px] md:text-base leading-relaxed max-w-2xl">
-            Hide members&apos; numbers and lock posting and admin controls to
-            admins only — then share the join link and QR code freely. Every
-            step below is shown on a real phone.
+            Set up a one-way channel where only admins broadcast to members — and
+            members&apos; numbers stay hidden, so no one can harvest them to spam
+            or target everyone. Then share the join link and QR freely: a scammer
+            who joins finds a locked room. Every step is shown on a real phone.
           </p>
         </div>
       </section>
@@ -275,8 +289,8 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
             any groups or members, so no one ever lands in an open room. Set
             privacy and posting first, then who can add people, groups, and
             share links — for the{" "}
-            <strong className="text-[#0f2137]">community</strong>, then for{" "}
-            <strong className="text-[#0f2137]">every group inside it</strong>.
+            <strong className="text-[#0f2137]">community</strong>, then for the{" "}
+            <strong className="text-[#0f2137]">Announcement group</strong>.
           </p>
 
           <PlatformNote />
@@ -301,7 +315,7 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
                   </>
                 }
                 items={groupSettings}
-                note="Do this for the default group and every other group you keep in the community."
+                note="Apply these to the Announcement group and any group an admin adds later."
               />
               <PhoneRow shots={[IMG.groupSettingsEntry, IMG.groupPermsOff]} />
             </div>
@@ -320,11 +334,13 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
               </p>
             </div>
             <h2 className="text-xl md:text-2xl font-bold text-[#0f2137] tracking-tight mb-2">
-              Move everyone in — privately
+              Bulk-add an existing group — privately
             </h2>
             <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">
-              Now the community is locked down, move a whole existing group in
-              at once — without members ever seeing each other.
+              Already run a group? Move its members into your announcement
+              channel all at once — numbers hidden, members can&apos;t see each
+              other, and it stays out of view of people already in the community
+              while you set it up.
             </p>
             <div className="grid gap-5 sm:grid-cols-3">
               {migrationSteps.map((step, i) => (
@@ -347,6 +363,18 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
                 </div>
               ))}
             </div>
+            <div className="mt-5 flex items-start gap-3 rounded-xl bg-white border border-[#25D366]/40 px-4 py-3">
+              <CheckCircle2
+                className="h-5 w-5 text-[#1e9c52] flex-shrink-0 mt-0.5"
+                strokeWidth={1.75}
+              />
+              <p className="text-[13px] text-[#3f6b4e] leading-relaxed">
+                <strong>The end result:</strong> your imported members are now
+                in the Announcement group only — so they can&apos;t see each
+                other, and their numbers stay hidden. The group you removed is a
+                normal standalone group again — keep it or delete it.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -363,8 +391,8 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
               Members get every announcement — but can&apos;t see each
               other&apos;s numbers, can&apos;t post links, and can&apos;t add
               anyone. So share the join link and QR freely: a scammer who walks
-              in finds a locked room — no numbers to grab, no way to broadcast,
-              and no one to add.
+              in finds a locked room — no member numbers to grab, no way to
+              broadcast, and no one to add.
             </p>
           </div>
         </div>
@@ -386,6 +414,17 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
             <li className="flex gap-3">
               <Dot />
               <span>
+                <strong className="text-[#0f2137]">
+                  Members can reply under an announcement.
+                </strong>{" "}
+                Their number stays masked — anyone who doesn&apos;t already have
+                them saved sees only the first and last digits; those who do see
+                just the saved name.
+              </span>
+            </li>
+            <li className="flex gap-3">
+              <Dot />
+              <span>
                 <strong className="text-[#0f2137]">Update WhatsApp</strong>{" "}
                 first, so all the privacy and permission options appear.
               </span>
@@ -394,10 +433,11 @@ export default function WhatsAppGuide({ guideUrl }: { guideUrl: string }) {
               <Dot />
               <span>
                 <strong className="text-[#0f2137]">
-                  Watch your admin list.
+                  Keep your admin list tiny.
                 </strong>{" "}
-                Admins are the only ones who can post or change anything — keep
-                that list to people you trust.
+                Admins are the only ones who can post or change anything — and
+                every admin can see every member&apos;s number, so a short list
+                keeps the blast radius small. Add only people you trust.
               </span>
             </li>
           </ul>
